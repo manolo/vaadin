@@ -17,15 +17,18 @@
 package com.vaadin.launcher;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -43,6 +46,8 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSocketConnector;
+import org.eclipse.jetty.util.Scanner;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.vaadin.launcher.util.BrowserLauncher;
@@ -160,19 +165,18 @@ public class DevelopmentServerLauncher {
         if (serverArgs.containsKey("withssl")) {
             final SslSocketConnector sslConnector = new SslSocketConnector();
             sslConnector.setPort(8444);
-            sslConnector.setTruststore(KEYSTORE);
-            sslConnector.setTrustPassword("password");
-            sslConnector.setKeystore(KEYSTORE);
-            sslConnector.setKeyPassword("password");
-            sslConnector.setPassword("password");
+            SslContextFactory sslFact = sslConnector.getSslContextFactory();
+            sslFact.setTrustStore(KEYSTORE);
+            sslFact.setTrustStorePassword("password");
+            sslFact.setKeyStorePath(KEYSTORE);
+            sslFact.setKeyManagerPassword("password");
+            sslFact.setKeyStorePassword("password");
             server.setConnectors(new Connector[] { connector, sslConnector });
         } else {
             server.setConnectors(new Connector[] { connector });
         }
 
         final WebAppContext webappcontext = new WebAppContext();
-        String path = DevelopmentServerLauncher.class.getPackage().getName()
-                .replace(".", File.separator);
         webappcontext.setContextPath(serverArgs.get("context"));
         webappcontext.setWar(serverArgs.get("webroot"));
         server.setHandler(webappcontext);
@@ -196,6 +200,36 @@ public class DevelopmentServerLauncher {
                 webappcontext.addFilter(CacheFilter.class, p,
                         EnumSet.of(DispatcherType.REQUEST));
             }
+        }
+
+        File classFolder = new File(webappcontext.getWar()
+                + "/WEB-INF/classes/");
+        if (classFolder.exists()) {
+            System.out.println("Enabling context reloading. classFolder="
+                    + classFolder);
+            Scanner scanner = new Scanner();
+            scanner.setScanDirs(Arrays.asList(classFolder));
+            scanner.setScanInterval(1);
+            scanner.setRecursive(true);
+            scanner.addListener(new Scanner.BulkListener() {
+                @Override
+                public void filesChanged(List<String> filenames)
+                        throws Exception {
+                    webappcontext.stop();
+                    server.stop();
+                    webappcontext.start();
+                    server.start();
+                }
+            });
+            scanner.setReportExistingFilesOnStartup(false);
+            scanner.setFilenameFilter(new FilenameFilter() {
+                @Override
+                public boolean accept(File folder, String name) {
+                    return name.endsWith(".class");
+                }
+            });
+            scanner.start();
+            server.getContainer().addBean(scanner);
         }
 
         try {
@@ -380,7 +414,6 @@ public class DevelopmentServerLauncher {
         public void destroy() {
             // TODO Auto-generated method stub
         }
-
     }
 
     private static void dumpThreadStacks() {
@@ -395,7 +428,6 @@ public class DevelopmentServerLauncher {
             }
             System.out.println();
         }
-
     }
 
 }
