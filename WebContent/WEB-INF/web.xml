@@ -95,6 +95,16 @@
         </init-param>
         <async-supported>true</async-supported>
     </servlet>
+    
+    <servlet>
+        <servlet-name>ApiTestUI</servlet-name>
+        <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+        <init-param>
+            <param-name>UI</param-name>
+            <param-value>com.vaadin.tests.integration.ApiTestUI</param-value>
+        </init-param>
+        <async-supported>true</async-supported>
+    </servlet>
 
     <!-- For testing GAE - the deployment script changes this to use GAEVaadinServlet -->
     <servlet>
@@ -144,6 +154,11 @@
     <servlet-mapping>
         <servlet-name>IntegrationTest</servlet-name>
         <url-pattern>/VAADIN/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>ApiTestUI</servlet-name>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
