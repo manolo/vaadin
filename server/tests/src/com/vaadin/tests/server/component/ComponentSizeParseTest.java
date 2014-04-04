@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 
 import org.junit.Assert;
 
-import com.vaadin.server.Sizeable.Unit;
+import com.vaadin.shared.ui.Sizeable.Unit;
 import com.vaadin.shared.ui.label.LabelState;
 import com.vaadin.ui.Label;
 

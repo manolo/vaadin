@@ -24,13 +24,11 @@ import java.io.Serializable;
  * 
  * @author Vaadin Ltd.
  * @since 3.0
+ * 
+ * @deprecated use {@link #com.vaadin.shared.ui.Resource} instead
  */
+@Deprecated
 public interface Resource extends Serializable {
-
-    /**
-     * Gets the MIME type of the resource.
-     * 
-     * @return the MIME type of the resource.
-     */
     public String getMIMEType();
+
 }

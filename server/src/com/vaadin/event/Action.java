@@ -19,6 +19,7 @@ package com.vaadin.event;
 import java.io.Serializable;
 
 import com.vaadin.server.Resource;
+import com.vaadin.shared.ui.IsAction;
 
 /**
  * Implements the action framework. This class contains subinterfaces for action
@@ -29,7 +30,7 @@ import com.vaadin.server.Resource;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class Action implements Serializable {
+public class Action implements Serializable, IsAction {
 
     /**
      * Action title.
@@ -64,19 +65,20 @@ public class Action implements Serializable {
         this.icon = icon;
     }
 
-    /**
-     * Returns the action's caption.
+    /*
+     * (non-Javadoc)
      * 
-     * @return the action's caption as a <code>String</code>.
+     * @see com.vaadin.event.IsAction#getCaption()
      */
+    @Override
     public String getCaption() {
         return caption;
     }
 
-    /**
-     * Returns the action's icon.
+    /*
+     * (non-Javadoc)
      * 
-     * @return the action's Icon.
+     * @see com.vaadin.event.IsAction#getIcon()
      */
     public Resource getIcon() {
         return icon;
@@ -178,21 +180,20 @@ public class Action implements Serializable {
         public void removeActionHandler(Action.Handler actionHandler);
     }
 
-    /**
-     * Sets the caption.
+    /*
+     * (non-Javadoc)
      * 
-     * @param caption
-     *            the caption to set.
+     * @see com.vaadin.event.IsAction#setCaption(java.lang.String)
      */
+    @Override
     public void setCaption(String caption) {
         this.caption = caption;
     }
 
-    /**
-     * Sets the icon.
+    /*
+     * (non-Javadoc)
      * 
-     * @param icon
-     *            the icon to set.
+     * @see com.vaadin.event.IsAction#setIcon(com.vaadin.server.Resource)
      */
     public void setIcon(Resource icon) {
         this.icon = icon;

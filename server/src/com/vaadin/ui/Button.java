@@ -29,13 +29,12 @@ import com.vaadin.event.FieldEvents.FocusAndBlurServerRpcImpl;
 import com.vaadin.event.FieldEvents.FocusEvent;
 import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.event.ShortcutAction.ModifierKey;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.button.ButtonServerRpc;
 import com.vaadin.shared.ui.button.ButtonState;
+import com.vaadin.shared.ui.button.IsButton;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.util.ReflectTools;
 
@@ -48,7 +47,7 @@ import com.vaadin.util.ReflectTools;
 @SuppressWarnings("serial")
 public class Button extends AbstractComponent implements
         FieldEvents.BlurNotifier, FieldEvents.FocusNotifier, Focusable,
-        Action.ShortcutNotifier {
+        Action.ShortcutNotifier, IsButton {
 
     private ButtonServerRpc rpc = new ButtonServerRpc() {
 
@@ -75,9 +74,10 @@ public class Button extends AbstractComponent implements
     FocusAndBlurServerRpcImpl focusBlurRpc = new FocusAndBlurServerRpcImpl(this) {
 
         @Override
-        protected void fireEvent(Event event) {
+        protected void fireEvent(com.vaadin.ui.Component.Event event) {
             Button.this.fireEvent(event);
         }
+
     };
 
     /**
@@ -319,12 +319,14 @@ public class Button extends AbstractComponent implements
 
     }
 
-    /**
-     * Adds the button click listener.
+    /*
+     * (non-Javadoc)
      * 
-     * @param listener
-     *            the Listener to be added.
+     * @see
+     * com.vaadin.ui.IButton#addClickListener(com.vaadin.ui.Button.ClickListener
+     * )
      */
+    @Override
     public void addClickListener(ClickListener listener) {
         addListener(ClickEvent.class, listener,
                 ClickListener.BUTTON_CLICK_METHOD);
@@ -339,12 +341,14 @@ public class Button extends AbstractComponent implements
         addClickListener(listener);
     }
 
-    /**
-     * Removes the button click listener.
+    /*
+     * (non-Javadoc)
      * 
-     * @param listener
-     *            the Listener to be removed.
+     * @see
+     * com.vaadin.ui.IButton#removeClickListener(com.vaadin.ui.Button.ClickListener
+     * )
      */
+    @Override
     public void removeClickListener(ClickListener listener) {
         removeListener(ClickEvent.class, listener,
                 ClickListener.BUTTON_CLICK_METHOD);
@@ -359,11 +363,12 @@ public class Button extends AbstractComponent implements
         removeClickListener(listener);
     }
 
-    /**
-     * Simulates a button click, notifying all server-side listeners.
+    /*
+     * (non-Javadoc)
      * 
-     * No action is taken is the button is disabled.
+     * @see com.vaadin.ui.IButton#click()
      */
+    @Override
     public void click() {
         if (isEnabled() && !isReadOnly()) {
             fireClick();
@@ -393,6 +398,12 @@ public class Button extends AbstractComponent implements
         fireEvent(new Button.ClickEvent(this, details));
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IButton#addBlurListener(com.vaadin.event.FieldEvents.
+     * BlurListener)
+     */
     @Override
     public void addBlurListener(BlurListener listener) {
         addListener(BlurEvent.EVENT_ID, BlurEvent.class, listener,
@@ -408,6 +419,13 @@ public class Button extends AbstractComponent implements
         addBlurListener(listener);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.vaadin.ui.IButton#removeBlurListener(com.vaadin.event.FieldEvents
+     * .BlurListener)
+     */
     @Override
     public void removeBlurListener(BlurListener listener) {
         removeListener(BlurEvent.EVENT_ID, BlurEvent.class, listener);
@@ -423,6 +441,12 @@ public class Button extends AbstractComponent implements
         removeBlurListener(listener);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IButton#addFocusListener(com.vaadin.event.FieldEvents.
+     * FocusListener)
+     */
     @Override
     public void addFocusListener(FocusListener listener) {
         addListener(FocusEvent.EVENT_ID, FocusEvent.class, listener,
@@ -439,6 +463,13 @@ public class Button extends AbstractComponent implements
         addFocusListener(listener);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.vaadin.ui.IButton#removeFocusListener(com.vaadin.event.FieldEvents
+     * .FocusListener)
+     */
     @Override
     public void removeFocusListener(FocusListener listener) {
         removeListener(FocusEvent.EVENT_ID, FocusEvent.class, listener);
@@ -460,17 +491,12 @@ public class Button extends AbstractComponent implements
 
     protected ClickShortcut clickShortcut;
 
-    /**
-     * Makes it possible to invoke a click on this button by pressing the given
-     * {@link KeyCode} and (optional) {@link ModifierKey}s.<br/>
-     * The shortcut is global (bound to the containing Window).
+    /*
+     * (non-Javadoc)
      * 
-     * @param keyCode
-     *            the keycode for invoking the shortcut
-     * @param modifiers
-     *            the (optional) modifiers for invoking the shortcut, null for
-     *            none
+     * @see com.vaadin.ui.IButton#setClickShortcut(int, int)
      */
+    @Override
     public void setClickShortcut(int keyCode, int... modifiers) {
         if (clickShortcut != null) {
             removeShortcutListener(clickShortcut);
@@ -480,10 +506,12 @@ public class Button extends AbstractComponent implements
         getState().clickShortcutKeyCode = clickShortcut.getKeyCode();
     }
 
-    /**
-     * Removes the keyboard shortcut previously set with
-     * {@link #setClickShortcut(int, int...)}.
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IButton#removeClickShortcut()
      */
+    @Override
     public void removeClickShortcut() {
         if (clickShortcut != null) {
             removeShortcutListener(clickShortcut);
@@ -549,28 +577,22 @@ public class Button extends AbstractComponent implements
         }
     }
 
-    /**
-     * Determines if a button is automatically disabled when clicked. See
-     * {@link #setDisableOnClick(boolean)} for details.
+    /*
+     * (non-Javadoc)
      * 
-     * @return true if the button is disabled when clicked, false otherwise
+     * @see com.vaadin.ui.IButton#isDisableOnClick()
      */
+    @Override
     public boolean isDisableOnClick() {
         return getState().disableOnClick;
     }
 
-    /**
-     * Determines if a button is automatically disabled when clicked. If this is
-     * set to true the button will be automatically disabled when clicked,
-     * typically to prevent (accidental) extra clicks on a button.
-     * <p>
-     * Note that this is only used when the click comes from the user, not when
-     * calling {@link #click()}.
-     * </p>
+    /*
+     * (non-Javadoc)
      * 
-     * @param disableOnClick
-     *            true to disable button when it is clicked, false otherwise
+     * @see com.vaadin.ui.IButton#setDisableOnClick(boolean)
      */
+    @Override
     public void setDisableOnClick(boolean disableOnClick) {
         getState().disableOnClick = disableOnClick;
     }
@@ -579,6 +601,11 @@ public class Button extends AbstractComponent implements
      * (non-Javadoc)
      * 
      * @see com.vaadin.ui.Component.Focusable#getTabIndex()
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IButton#getTabIndex()
      */
     @Override
     public int getTabIndex() {
@@ -590,11 +617,21 @@ public class Button extends AbstractComponent implements
      * 
      * @see com.vaadin.ui.Component.Focusable#setTabIndex(int)
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IButton#setTabIndex(int)
+     */
     @Override
     public void setTabIndex(int tabIndex) {
         getState().tabIndex = tabIndex;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IButton#focus()
+     */
     @Override
     public void focus() {
         // Overridden only to make public
@@ -606,57 +643,54 @@ public class Button extends AbstractComponent implements
         return (ButtonState) super.getState();
     }
 
-    /**
-     * Sets the component's icon and alt text.
+    /*
+     * (non-Javadoc)
      * 
-     * An alt text is shown when an image could not be loaded, and read by
-     * assisitve devices.
-     * 
-     * @param icon
-     *            the icon to be shown with the component's caption.
-     * @param iconAltText
-     *            String to use as alt text
+     * @see com.vaadin.ui.IButton#setIcon(com.vaadin.server.Resource,
+     * java.lang.String)
      */
+    @Override
     public void setIcon(Resource icon, String iconAltText) {
         super.setIcon(icon);
         getState().iconAltText = iconAltText == null ? "" : iconAltText;
     }
 
-    /**
-     * Returns the icon's alt text.
+    /*
+     * (non-Javadoc)
      * 
-     * @return String with the alt text
+     * @see com.vaadin.ui.IButton#getIconAlternateText()
      */
+    @Override
     public String getIconAlternateText() {
         return getState().iconAltText;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IButton#setIconAlternateText(java.lang.String)
+     */
+    @Override
     public void setIconAlternateText(String iconAltText) {
         getState().iconAltText = iconAltText;
     }
 
-    /**
-     * Set whether the caption text is rendered as HTML or not. You might need
-     * to retheme button to allow higher content than the original text style.
+    /*
+     * (non-Javadoc)
      * 
-     * If set to true, the captions are passed to the browser as html and the
-     * developer is responsible for ensuring no harmful html is used. If set to
-     * false, the content is passed to the browser as plain text.
-     * 
-     * @param htmlContentAllowed
-     *            <code>true</code> if caption is rendered as HTML,
-     *            <code>false</code> otherwise
+     * @see com.vaadin.ui.IButton#setHtmlContentAllowed(boolean)
      */
+    @Override
     public void setHtmlContentAllowed(boolean htmlContentAllowed) {
         getState().htmlContentAllowed = htmlContentAllowed;
     }
 
-    /**
-     * Return HTML rendering setting
+    /*
+     * (non-Javadoc)
      * 
-     * @return <code>true</code> if the caption text is to be rendered as HTML,
-     *         <code>false</code> otherwise
+     * @see com.vaadin.ui.IButton#isHtmlContentAllowed()
      */
+    @Override
     public boolean isHtmlContentAllowed() {
         return getState().htmlContentAllowed;
     }

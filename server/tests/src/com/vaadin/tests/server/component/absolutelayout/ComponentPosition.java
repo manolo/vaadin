@@ -3,7 +3,6 @@ package com.vaadin.tests.server.component.absolutelayout;
 import junit.framework.TestCase;
 
 import com.vaadin.server.Sizeable;
-import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 
@@ -13,7 +12,7 @@ public class ComponentPosition extends TestCase {
     private static final String PARTIAL_CSS = "top:7.0px;left:7.0em;";
     private static final Float CSS_VALUE = Float.valueOf(7);
 
-    private static final Unit UNIT_UNSET = Sizeable.Unit.PIXELS;
+    private static final Sizeable.Unit UNIT_UNSET = Sizeable.Unit.PIXELS;
 
     /**
      * Add component w/o giving positions, assert that everything is unset

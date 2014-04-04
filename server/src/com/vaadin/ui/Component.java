@@ -27,6 +27,7 @@ import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.server.Sizeable;
 import com.vaadin.server.VariableOwner;
+import com.vaadin.shared.ui.IsComponent;
 
 /**
  * {@code Component} is the top-level interface that is and must be implemented
@@ -59,7 +60,8 @@ import com.vaadin.server.VariableOwner;
  * @author Vaadin Ltd.
  * @since 3.0
  */
-public interface Component extends ClientConnector, Sizeable, Serializable {
+public interface Component extends IsComponent, ClientConnector, Sizeable,
+        Serializable {
 
     /**
      * Gets all user-defined CSS style names of a component. If the component
@@ -80,6 +82,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      * @see #addStyleName(String)
      * @see #removeStyleName(String)
      */
+    @Override
     public String getStyleName();
 
     /**
@@ -132,6 +135,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      * @see #addStyleName(String)
      * @see #removeStyleName(String)
      */
+    @Override
     public void setStyleName(String style);
 
     /**
@@ -174,6 +178,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      * @see #setStyleName(String)
      * @see #removeStyleName(String)
      */
+    @Override
     public void addStyleName(String style);
 
     /**
@@ -195,6 +200,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      * @see #setStyleName(String)
      * @see #addStyleName(String)
      */
+    @Override
     public void removeStyleName(String style);
 
     /**
@@ -202,6 +208,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      * {@link Component#setPrimaryStyleName(String)} for a better description of
      * the primary stylename.
      */
+    @Override
     public String getPrimaryStyleName();
 
     /**
@@ -224,6 +231,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      * @param style
      *            The new primary style name
      */
+    @Override
     public void setPrimaryStyleName(String style);
 
     /**
@@ -247,6 +255,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      *         <code>false</code> otherwise.
      * @see VariableOwner#isEnabled()
      */
+    @Override
     public boolean isEnabled();
 
     /**
@@ -274,6 +283,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      *            a boolean value specifying if the component should be enabled
      *            or not
      */
+    @Override
     public void setEnabled(boolean enabled);
 
     /**
@@ -300,6 +310,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      * @see #setVisible(boolean)
      * @see #attach()
      */
+    @Override
     public boolean isVisible();
 
     /**
@@ -330,6 +341,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      *            visible after the call or not.
      * @see #isVisible()
      */
+    @Override
     public void setVisible(boolean visible);
 
     /**
@@ -394,6 +406,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      *         read-only mode, <code>false</code> if not.
      * @see #setReadOnly(boolean)
      */
+    @Override
     public boolean isReadOnly();
 
     /**
@@ -420,6 +433,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      *            a boolean value specifying whether the component is put
      *            read-only mode or not
      */
+    @Override
     public void setReadOnly(boolean readOnly);
 
     /**
@@ -434,6 +448,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      *         not set.
      * @see #setCaption(String)
      */
+    @Override
     public String getCaption();
 
     /**
@@ -489,6 +504,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      *            {@code null}, no caption is shown and it does not normally
      *            take any space
      */
+    @Override
     public void setCaption(String caption);
 
     /**
@@ -724,7 +740,10 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      * 
      * @return component's description <code>String</code>
      */
+    @Override
     public String getDescription();
+
+    void setComponentError(ErrorMessage componentError);
 
     /* Component event framework */
 
@@ -756,7 +775,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
      * @see Component.Listener
      */
     @SuppressWarnings("serial")
-    public static class Event extends ConnectorEvent {
+    public static class Event extends ConnectorEvent implements IsEvent {
 
         /**
          * Constructs a new event with the specified source component.
@@ -773,6 +792,7 @@ public interface Component extends ClientConnector, Sizeable, Serializable {
          * 
          * @return the source component of the event
          */
+        @Override
         public Component getComponent() {
             return (Component) getSource();
         }

@@ -14,17 +14,23 @@
  * the License.
  */
 
-package com.vaadin.server;
+package com.vaadin.shared.ui;
+
+import java.io.Serializable;
 
 /**
- * Interface for rendering error messages to terminal. All the visible errors
- * shown to user must implement this interface.
+ * <code>Resource</code> provided to the client terminal. Support for actually
+ * displaying the resource type is left to the terminal.
  * 
  * @author Vaadin Ltd.
  * @since 3.0
- * 
- * @deprecated use {@link #com.vaadin.shared.ui.ErrorMessage} instead
  */
-@Deprecated
-public interface ErrorMessage extends com.vaadin.shared.ui.ErrorMessage {
+public interface IsResource extends Serializable {
+
+    /**
+     * Gets the MIME type of the resource.
+     * 
+     * @return the MIME type of the resource.
+     */
+    public String getMIMEType();
 }

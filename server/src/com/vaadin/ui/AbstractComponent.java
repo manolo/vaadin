@@ -37,6 +37,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.AbstractComponentState;
 import com.vaadin.shared.ComponentConstants;
 import com.vaadin.shared.ui.ComponentStateUtil;
+import com.vaadin.shared.ui.IsComponent;
 import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.util.ReflectTools;
 
@@ -51,7 +52,7 @@ import com.vaadin.util.ReflectTools;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractComponent extends AbstractClientConnector
-        implements Component {
+        implements Component, IsComponent {
 
     /* Private members */
 
@@ -113,6 +114,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.ui.Component#setId(java.lang.String)
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setId(java.lang.String)
+     */
     @Override
     public void setId(String id) {
         getState().id = id;
@@ -123,13 +129,20 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.ui.Component#getId()
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getId()
+     */
     @Override
     public String getId() {
         return getState(false).id;
     }
 
-    /**
-     * @deprecated As of 7.0. Use {@link #setId(String)}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setDebugId(java.lang.String)
      */
     @Deprecated
     public void setDebugId(String id) {
@@ -147,6 +160,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
     /*
      * Gets the component's style. Don't add a JavaDoc comment here, we use the
      * default documentation from implemented interface.
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getStyleName()
      */
     @Override
     public String getStyleName() {
@@ -167,6 +185,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * Sets the component's style. Don't add a JavaDoc comment here, we use the
      * default documentation from implemented interface.
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setStyleName(java.lang.String)
+     */
     @Override
     public void setStyleName(String style) {
         if (style == null || "".equals(style)) {
@@ -184,16 +207,31 @@ public abstract class AbstractComponent extends AbstractClientConnector
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setPrimaryStyleName(java.lang.String)
+     */
     @Override
     public void setPrimaryStyleName(String style) {
         getState().primaryStyleName = style;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getPrimaryStyleName()
+     */
     @Override
     public String getPrimaryStyleName() {
         return getState().primaryStyleName;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#addStyleName(java.lang.String)
+     */
     @Override
     public void addStyleName(String style) {
         if (style == null || "".equals(style)) {
@@ -217,6 +255,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#removeStyleName(java.lang.String)
+     */
     @Override
     public void removeStyleName(String style) {
         if (ComponentStateUtil.hasStyles(getState())) {
@@ -231,18 +274,20 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * Get's the component's caption. Don't add a JavaDoc comment here, we use
      * the default documentation from implemented interface.
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getCaption()
+     */
     @Override
     public String getCaption() {
         return getState(false).caption;
     }
 
-    /**
-     * Sets the component's caption <code>String</code>. Caption is the visible
-     * name of the component. This method will trigger a
-     * {@link RepaintRequestEvent}.
+    /*
+     * (non-Javadoc)
      * 
-     * @param caption
-     *            the new caption <code>String</code> for the component.
+     * @see com.vaadin.ui.IsComponent#setCaption(java.lang.String)
      */
     @Override
     public void setCaption(String caption) {
@@ -252,6 +297,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
     /*
      * Don't add a JavaDoc comment here, we use the default documentation from
      * implemented interface.
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getLocale()
      */
     @Override
     public Locale getLocale() {
@@ -302,19 +352,23 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * Gets the component's icon resource. Don't add a JavaDoc comment here, we
      * use the default documentation from implemented interface.
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getIcon()
+     */
     @Override
     public Resource getIcon() {
         return getResource(ComponentConstants.ICON_RESOURCE);
     }
 
-    /**
-     * Sets the component's icon. This method will trigger a
-     * {@link RepaintRequestEvent}.
+    /*
+     * (non-Javadoc)
      * 
-     * @param icon
-     *            the icon to be shown with the component's caption.
+     * @see com.vaadin.ui.IsComponent#setIcon(com.vaadin.server.Resource)
      */
     @Override
+    @Deprecated
     public void setIcon(Resource icon) {
         setResource(ComponentConstants.ICON_RESOURCE, icon);
     }
@@ -323,6 +377,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * (non-Javadoc)
      * 
      * @see com.vaadin.ui.Component#isEnabled()
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#isEnabled()
      */
     @Override
     public boolean isEnabled() {
@@ -334,6 +393,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.ui.Component#setEnabled(boolean)
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setEnabled(boolean)
+     */
     @Override
     public void setEnabled(boolean enabled) {
         getState().enabled = enabled;
@@ -343,6 +407,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * (non-Javadoc)
      * 
      * @see com.vaadin.client.Connector#isConnectorEnabled()
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#isConnectorEnabled()
      */
     @Override
     public boolean isConnectorEnabled() {
@@ -391,6 +460,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.ui.Component#isVisible()
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#isVisible()
+     */
     @Override
     public boolean isVisible() {
         return visible;
@@ -400,6 +474,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * (non-Javadoc)
      * 
      * @see com.vaadin.ui.Component#setVisible(boolean)
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setVisible(boolean)
      */
     @Override
     public void setVisible(boolean visible) {
@@ -428,23 +507,22 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.ui.Component#getDescription()
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getDescription()
+     */
     @Override
     public String getDescription() {
         return getState(false).description;
     }
 
-    /**
-     * Sets the component's description. See {@link #getDescription()} for more
-     * information on what the description is. This method will trigger a
-     * {@link RepaintRequestEvent}.
+    /*
+     * (non-Javadoc)
      * 
-     * The description is displayed as HTML in tooltips or directly in certain
-     * components so care should be taken to avoid creating the possibility for
-     * HTML injection and possibly XSS vulnerabilities.
-     * 
-     * @param description
-     *            the new description string for the component.
+     * @see com.vaadin.ui.IsComponent#setDescription(java.lang.String)
      */
+    @Override
     public void setDescription(String description) {
         getState().description = description;
     }
@@ -453,11 +531,21 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * Gets the component's parent component. Don't add a JavaDoc comment here,
      * we use the default documentation from implemented interface.
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getParent()
+     */
     @Override
     public HasComponents getParent() {
         return parent;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setParent(com.vaadin.ui.HasComponents)
+     */
     @Override
     public void setParent(HasComponents parent) {
         // If the parent is not changed, don't do anything
@@ -509,39 +597,35 @@ public abstract class AbstractComponent extends AbstractClientConnector
         return null;
     }
 
-    /**
-     * Gets the error message for this component.
+    /*
+     * (non-Javadoc)
      * 
-     * @return ErrorMessage containing the description of the error state of the
-     *         component or null, if the component contains no errors. Extending
-     *         classes should override this method if they support other error
-     *         message types such as validation errors or buffering errors. The
-     *         returned error message contains information about all the errors.
+     * @see com.vaadin.ui.IsComponent#getErrorMessage()
      */
+    @Override
     public ErrorMessage getErrorMessage() {
         return componentError;
     }
 
-    /**
-     * Gets the component's error message.
+    /*
+     * (non-Javadoc)
      * 
-     * @link Terminal.ErrorMessage#ErrorMessage(String, int)
-     * 
-     * @return the component's error message.
+     * @see com.vaadin.ui.IsComponent#getComponentError()
      */
+    @Override
     public ErrorMessage getComponentError() {
         return componentError;
     }
 
-    /**
-     * Sets the component's error message. The message may contain certain XML
-     * tags, for more information see
+    /*
+     * (non-Javadoc)
      * 
-     * @link Component.ErrorMessage#ErrorMessage(String, int)
-     * 
-     * @param componentError
-     *            the new <code>ErrorMessage</code> of the component.
+     * @see
+     * com.vaadin.ui.IsComponent#setComponentError(com.vaadin.server.ErrorMessage
+     * )
      */
+    @Override
+    @Deprecated
     public void setComponentError(ErrorMessage componentError) {
         this.componentError = componentError;
         fireComponentErrorEvent();
@@ -549,8 +633,26 @@ public abstract class AbstractComponent extends AbstractClientConnector
     }
 
     /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.vaadin.shared.ui.IsComponent#setComponentError(com.vaadin.shared.
+     * ui.ErrorMessage)
+     */
+    @Override
+    public void setComponentError(
+            com.vaadin.shared.ui.ErrorMessage componentError) {
+        setComponentError((com.vaadin.server.ErrorMessage) componentError);
+    }
+
+    /*
      * Tests if the component is in read-only mode. Don't add a JavaDoc comment
      * here, we use the default documentation from implemented interface.
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#isReadOnly()
      */
     @Override
     public boolean isReadOnly() {
@@ -561,6 +663,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * Sets the component's read-only mode. Don't add a JavaDoc comment here, we
      * use the default documentation from implemented interface.
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setReadOnly(boolean)
+     */
     @Override
     public void setReadOnly(boolean readOnly) {
         getState().readOnly = readOnly;
@@ -570,6 +677,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * Notify the component that it's attached to a window. Don't add a JavaDoc
      * comment here, we use the default documentation from implemented
      * interface.
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#attach()
      */
     @Override
     public void attach() {
@@ -587,6 +699,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
     /*
      * Detach the component from application. Don't add a JavaDoc comment here,
      * we use the default documentation from implemented interface.
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#detach()
      */
     @Override
     public void detach() {
@@ -702,12 +819,35 @@ public abstract class AbstractComponent extends AbstractClientConnector
     }
 
     /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.vaadin.ui.IsComponent#addListener(com.vaadin.ui.Component.Listener)
+     */
+    @Override
+    public void addListener(IsListener listener) {
+        addListener(Component.Event.class, listener, COMPONENT_EVENT_METHOD);
+    }
+
+    /*
      * Removes a previously registered listener from this component. Don't add a
      * JavaDoc comment here, we use the default documentation from implemented
      * interface.
      */
     @Override
     public void removeListener(Component.Listener listener) {
+        removeListener(Component.Event.class, listener, COMPONENT_EVENT_METHOD);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.vaadin.shared.ui.IsComponent#removeListener(com.vaadin.shared.ui.
+     * IsComponent.IsListener)
+     */
+    @Override
+    public void removeListener(IsListener listener) {
         removeListener(Component.Event.class, listener, COMPONENT_EVENT_METHOD);
     }
 
@@ -727,24 +867,22 @@ public abstract class AbstractComponent extends AbstractClientConnector
         fireEvent(new Component.ErrorEvent(getComponentError(), this));
     }
 
-    /**
-     * Sets the data object, that can be used for any application specific data.
-     * The component does not use or modify this data.
+    /*
+     * (non-Javadoc)
      * 
-     * @param data
-     *            the Application specific data.
-     * @since 3.1
+     * @see com.vaadin.ui.IsComponent#setData(java.lang.Object)
      */
+    @Override
     public void setData(Object data) {
         applicationData = data;
     }
 
-    /**
-     * Gets the application specific data. See {@link #setData(Object)}.
+    /*
+     * (non-Javadoc)
      * 
-     * @return the Application specific data set with setData function.
-     * @since 3.1
+     * @see com.vaadin.ui.IsComponent#getData()
      */
+    @Override
     public Object getData() {
         return applicationData;
     }
@@ -756,6 +894,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.Sizeable#getHeight()
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getHeight()
+     */
     @Override
     public float getHeight() {
         return height;
@@ -765,6 +908,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * (non-Javadoc)
      * 
      * @see com.vaadin.server.Sizeable#getHeightUnits()
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getHeightUnits()
      */
     @Override
     public Unit getHeightUnits() {
@@ -776,6 +924,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.server.Sizeable#getWidth()
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getWidth()
+     */
     @Override
     public float getWidth() {
         return width;
@@ -786,6 +939,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.server.Sizeable#getWidthUnits()
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#getWidthUnits()
+     */
     @Override
     public Unit getWidthUnits() {
         return widthUnit;
@@ -795,6 +953,12 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * (non-Javadoc)
      * 
      * @see com.vaadin.server.Sizeable#setHeight(float, Unit)
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setHeight(float,
+     * com.vaadin.server.Sizeable.Unit)
      */
     @Override
     public void setHeight(float height, Unit unit) {
@@ -812,6 +976,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.server.Sizeable#setSizeFull()
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setSizeFull()
+     */
     @Override
     public void setSizeFull() {
         setWidth(100, Unit.PERCENTAGE);
@@ -823,6 +992,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.server.Sizeable#setSizeUndefined()
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setSizeUndefined()
+     */
     @Override
     public void setSizeUndefined() {
         setWidth(-1, Unit.PIXELS);
@@ -833,6 +1007,12 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * (non-Javadoc)
      * 
      * @see com.vaadin.server.Sizeable#setWidth(float, Unit)
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setWidth(float,
+     * com.vaadin.server.Sizeable.Unit)
      */
     @Override
     public void setWidth(float width, Unit unit) {
@@ -850,6 +1030,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * 
      * @see com.vaadin.server.Sizeable#setWidth(java.lang.String)
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setWidth(java.lang.String)
+     */
     @Override
     public void setWidth(String width) {
         Size size = parseStringSize(width);
@@ -864,6 +1049,11 @@ public abstract class AbstractComponent extends AbstractClientConnector
      * (non-Javadoc)
      * 
      * @see com.vaadin.server.Sizeable#setHeight(java.lang.String)
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.vaadin.ui.IsComponent#setHeight(java.lang.String)
      */
     @Override
     public void setHeight(String height) {

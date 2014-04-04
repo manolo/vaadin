@@ -1,6 +1,7 @@
 package com.vaadin.tests.api;
 
 import com.vaadin.tests.widgetset.client.api.ApiTestServerRpc;
+import com.vaadin.tests.widgetset.client.api.ApiTestState;
 
 @SuppressWarnings("serial")
 public class ApiTestComponent extends com.vaadin.ui.AbstractComponent {
@@ -13,5 +14,10 @@ public class ApiTestComponent extends com.vaadin.ui.AbstractComponent {
 
     public ApiTestComponent() {
         registerRpc(rpc);
+    }
+
+    @Override
+    public ApiTestState getState() {
+        return (ApiTestState) super.getState();
     }
 }

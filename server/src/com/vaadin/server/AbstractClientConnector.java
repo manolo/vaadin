@@ -668,6 +668,7 @@ public abstract class AbstractClientConnector implements ClientConnector,
      *            the resource to set, or <code>null</code> to clear a previous
      *            association.
      */
+    @Deprecated
     protected void setResource(String key, Resource resource) {
         ResourceReference resourceReference = ResourceReference.create(
                 resource, this, key);
