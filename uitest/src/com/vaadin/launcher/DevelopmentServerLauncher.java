@@ -202,9 +202,17 @@ public class DevelopmentServerLauncher {
             }
         }
 
+        // Configure Jetty to auto-reload when a class is compiled in the
+        // WEB-INF/classes folder.
+        // Since Eclipse is normally configured to write .class files in
+        // build/classes, we need a symbolic.
+        // We have already this link in git repo, so it is automatically
+        // created in unix machines, but in windows git creates a file
+        // with the link information, so we disable this feature, unless
+        // the user manually sets it manually.
         File classFolder = new File(webappcontext.getWar()
                 + "/WEB-INF/classes/");
-        if (classFolder.exists()) {
+        if (classFolder.isDirectory()) {
             System.out.println("Enabling context reloading. classFolder="
                     + classFolder);
             Scanner scanner = new Scanner();
@@ -230,6 +238,13 @@ public class DevelopmentServerLauncher {
             });
             scanner.start();
             server.getContainer().addBean(scanner);
+        } else {
+            System.out
+                    .println("In order to enable context reloading, you need either:"
+                            + "\n - Set your eclipse output folder to:  "
+                            + classFolder
+                            + "\n - Create a symbolic link: "
+                            + classFolder + " -> ../build/classes\n");
         }
 
         try {
